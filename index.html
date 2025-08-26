@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YAML Env Diff</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>YAML Env Diff</h1>
+        <p>Bandingkan <code>envVariables</code> (Helm) atau <code>env</code> (OpenShift)</p>
+      </div>
+      <div class="actions">
+        <button id="pastePreProdBtn" class="btn">Paste YAML Preploy↔Prod</button>
+        <button id="pasteProdOpBtn" class="btn">Paste YAML Prod↔OpenShift</button>
+        <button id="resetBtn" class="btn danger">Reset</button>
+      </div>
+    </header>
+
+    <section class="card controls">
+      <div style="flex:1">
+        <label>Cari ENV</label>
+        <input type="text" id="search" placeholder="Cari nama env (mis. DB_HOST)">
+      </div>
+    </section>
+
+    <section class="tabs">
+      <button class="tab active" data-tab="summary">Summary <span id="summaryCount">0</span></button>
+      <button class="tab" data-tab="changed">Changed <span id="changedCount">0</span></button>
+      <button class="tab" data-tab="added">Added in B <span id="addedCount">0</span></button>
+      <button class="tab" data-tab="removed">Removed from B <span id="removedCount">0</span></button>
+      <button class="tab" data-tab="duplicates">Duplicates <span id="dupCount">0</span></button>
+    </section>
+
+    <section class="card results">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>A</th>
+            <th>B</th>
+          </tr>
+        </thead>
+        <tbody id="diff-body">
+          <tr><td colspan="3" class="empty">Belum ada data untuk dibandingkan</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- Modal Preploy ↔ Prod -->
+  <div id="pasteModalPreProd" class="modal hidden">
+    <div class="modal-content">
+      <h3>Paste <b>YAML Preploy ↔ Prod (Helm)</b></h3>
+      <textarea id="pastePre" placeholder="Tempel YAML Preploy (Helm) di sini..."></textarea>
+      <textarea id="pasteProd" placeholder="Tempel YAML Prod (Helm) di sini..."></textarea>
+      <div class="modal-actions">
+        <button id="applyPreProd" class="btn">Apply</button>
+        <button class="btn danger cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Prod ↔ OpenShift -->
+  <div id="pasteModalProdOp" class="modal hidden">
+    <div class="modal-content">
+      <h3>Paste <b>YAML Prod ↔ OpenShift</b></h3>
+      <textarea id="pasteProdOpA" placeholder="Tempel YAML Prod di sini..."></textarea>
+      <textarea id="pasteProdOpB" placeholder="Tempel YAML OpenShift di sini..."></textarea>
+      <div class="modal-actions">
+        <button id="applyProdOp" class="btn">Apply</button>
+        <button class="btn danger cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
